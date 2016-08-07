@@ -1,23 +1,19 @@
-package com.sameperson.music;
+package com.sameperson.composition;
+
+import com.sameperson.core.BaseEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Entity
-public class Music {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private final Long id;
+public class Composition extends BaseEntity {
     private String title;
     private String url;
 
-    protected Music() {
-        id = null;
+    protected Composition() {
+        super();
     }
 
-    public Music(String title, String url) {
+    public Composition(String title, String url) {
         this();
         this.title = title;
         this.url = url;
