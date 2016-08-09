@@ -3,12 +3,15 @@ package com.sameperson.core;
 import com.sameperson.composition.Composition;
 import com.sameperson.composition.CompositionRepository;
 import com.sameperson.review.Review;
+import com.sameperson.user.User;
+import com.sameperson.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -16,10 +19,12 @@ import java.util.stream.IntStream;
 public class DatabaseLoader implements ApplicationRunner {
 
     private final CompositionRepository compositions;
+    private final UserRepository userRepository;
 
     @Autowired
-    public DatabaseLoader(CompositionRepository compositions) {
+    public DatabaseLoader(CompositionRepository compositions, UserRepository userRepository) {
         this.compositions = compositions;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -41,13 +46,24 @@ public class DatabaseLoader implements ApplicationRunner {
             "AI",
             "Aliens"
         };
+        List<User> users = Arrays.asList(
+                new User("sameperson", "Dmitry",  "Ponomarenko", "password", new String[] {"ROLE_USER"}),
+                new User("java8pro", "John",  "Smith", "password", new String[] {"ROLE_USER"}),
+                new User("aragorn", "Viggo",  "Mortensen", "password", new String[] {"ROLE_USER"}),
+                new User("purple_smart", "Twilight",  "Sparkle", "password", new String[] {"ROLE_USER"}),
+                new User("gunslinger", "Roland",  "Deschain", "password", new String[] {"ROLE_USER"})
+        );
+        userRepository.save(users);
+        userRepository.save(new User("admin", "admin", "admin", "admin", new String[] {"ROLE_USER", "ROLE_ADMIN"}));
         List<Composition> collectionOfCompositions = new ArrayList<>();
         IntStream.range(0, 100).forEach(i -> {
             String template = templates[i % templates.length];
             String word = words[i % words.length];
             String title = String.format(template, word);
             Composition c = new Composition(title, "https://www.google.com.ua/");
-            c.addReview(new Review(i % 5, title + " is rad stuff!"));
+            Review review = new Review((i % 5) + 1, title + " is rad stuff!");
+            review.setReviewer(users.get(i % users.size()));
+            c.addReview(review);
             collectionOfCompositions.add(c);
         });
         compositions.save(collectionOfCompositions);

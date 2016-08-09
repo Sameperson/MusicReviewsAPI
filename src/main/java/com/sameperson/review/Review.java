@@ -2,6 +2,7 @@ package com.sameperson.review;
 
 import com.sameperson.composition.Composition;
 import com.sameperson.core.BaseEntity;
+import com.sameperson.user.User;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -16,6 +17,8 @@ public class Review extends BaseEntity {
     private String description;
     @ManyToOne
     private Composition composition;
+    @ManyToOne
+    private User reviewer;
 
     protected Review() {
         super();
@@ -48,5 +51,13 @@ public class Review extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public User getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(User reviewer) {
+        this.reviewer = reviewer;
     }
 }
