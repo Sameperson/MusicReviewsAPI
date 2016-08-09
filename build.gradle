@@ -1,4 +1,4 @@
-group 'com.teamtreehouse'
+group 'com.sameperson'
 version '1.0-SNAPSHOT'
 
 buildscript {

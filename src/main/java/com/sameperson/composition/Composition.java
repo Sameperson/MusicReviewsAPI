@@ -6,11 +6,15 @@ import com.sameperson.review.Review;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Composition extends BaseEntity {
+    @NotNull
+    @Size(min = 3, max = 140)
     private String title;
     private String url;
     @OneToMany(mappedBy = "composition", cascade = CascadeType.ALL)

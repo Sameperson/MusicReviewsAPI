@@ -5,10 +5,14 @@ import com.sameperson.core.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Review extends BaseEntity {
     private int rating;
+    @NotNull
+    @Size(min = 10, max = 600)
     private String description;
     @ManyToOne
     private Composition composition;
